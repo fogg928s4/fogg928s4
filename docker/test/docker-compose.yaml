@@ -1,0 +1,49 @@
+# Nothing more than a wordpress docker-compose
+services:
+  wp:
+    container_name: wp_task
+    image: wordpress:6.8.1-php8.4
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8080:80"
+    environment:
+      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
+      - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
+      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
+      - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+      - WORDPRESS_TABLE_PREFIX=${WORDPRESS_TABLE_PREFIX}
+    volumes:
+      - ./etc/config/wp-config.php:/var/www/html/wp-config.php
+  db:
+    container_name: db_task
+    image: mysql:8.0
+    restart: always
+    volumes:
+      - db_task:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3307:3306"
+  
+  phpmyadmin:
+    container_name: phpmyadmin_task
+    image: phpmyadmin:latest
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - '8081:80'
+    environment:
+      - PMA_HOST=${PMA_HOST}
+      - PMA_USER=${PMA_USER}
+      - UPLOAD_LIMIT=${UPLOAD_LIMIT}
+      - PMA_PASSWORD=${PMA_PASSWORD}
+
+volumes:
+  db_task:
+  wp_task:
