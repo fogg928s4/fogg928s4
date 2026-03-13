@@ -22,6 +22,9 @@ function Main {
         Write-Host "Running Command ${Command} on ${Path} ..."
         wt split-pane -p "Powershell" -d $Services[0] 
         wt split-pane -p "Powershell" -d $Services[1] 
+
+        # GOTTA RUN THIS (4 tabs)
+        # wt -p "CMD" `; -d "C:\Users\roberto.melgares\Documents" `; `;
     }
     catch {
         Write-Error "You messed it up..."
